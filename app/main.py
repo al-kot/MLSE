@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 app = FastAPI()
-model_joblib = joblib.load('regression.joblib')
+model_joblib = joblib.load('./app/regression.joblib')
 
 class ModelInputs(BaseModel):
     size: float
