@@ -58,6 +58,11 @@ jobs:
           VM_HOST: ${{ secrets.VM_HOST }}
         run: |
           sshpass -p "$VM_PASS" ssh -o StrictHostKeyChecking=no "$VM_USER@$VM_HOST" <<EOF
-          [ ! "$(docker ps -a | grep "ak_mlse")" ] && docker pull "ghcr.io/al-kot/mlse:latest"; docker restart "ak_mlse" || docker run -d -p 6942:6942 --name "ak_mlse" "ghcr.io/al-kot/mlse"
+          if [ ! "$(docker ps -a | grep "ak_mlse")" ]; then
+            docker pull "ghcr.io/al-kot/mlse:latest"
+            docker restart "ak_mlse"
+          else
+            docker run -d -p 6942:6942 --name "ak_mlse" "ghcr.io/al-kot/mlse"
+          fi
           EOF
       
