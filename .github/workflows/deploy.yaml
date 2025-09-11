@@ -34,7 +34,6 @@ jobs:
           tags: ghcr.io/al-kot/mlse:latest
       
       - name: Deploy to vm
-        shell: bash
         env:
           VM_PASS: ${{ secrets.VM_PASS }}
           VM_USER: ${{ secrets.VM_USER }}
