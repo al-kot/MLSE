@@ -49,4 +49,14 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+
+      - name: Deploy to vm
+        shell: bash
+        env:
+          VM_PASS: ${{ secrets.VM_PASS }}
+          VM_USER: ${{ secrets.VM_USER }}
+          VM_HOST: ${{ secrets.VM_HOST }}
+        run: |
+          sshpass -p "$VM_PASS" ssh "$VM_USER@$VM_HOST"
+          [ ! "$(docker ps -a | grep "ak_mlse")" ] && docker pull "ghcr.io/al-kot/mlse:latest"; docker restart "ak_mlse" || docker run -d -p 6942:6942 --name "ak_mlse" "ghcr.io/al-kot/mlse"
       
